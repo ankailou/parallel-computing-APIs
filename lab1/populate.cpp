@@ -1,5 +1,6 @@
 #include <iostream>
 #include <map>
+#include <cstdlib>
 #include "lab1.h"
 using namespace std;
 
