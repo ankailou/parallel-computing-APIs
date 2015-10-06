@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
             gettimeofday(&t1, NULL);
             convergenceLoop();
             gettimeofday(&t2, NULL);
-            float diff = ((float)t2.tv_usec - (float)t1.tv_usec) / (float)1000000;
+            float diff = ((float)t2.tv_usec - (float)t1.tv_usec) / 1000000.0;
             cout << "Loop " << loops << ": " << diff << " seconds!" << endl;
             runtime += diff;
         }
