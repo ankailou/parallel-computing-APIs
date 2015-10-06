@@ -32,7 +32,7 @@ int main() {
         }
     }
     cout << "Number of Convergence Loops: " << loops << endl;
-    cout << "Total Program Running Time:  " << runtime << endl;
+    cout << "Total Program Running Time:  " << runtime << " seconds!" << endl;
 }
 
 /*****************************************************************************

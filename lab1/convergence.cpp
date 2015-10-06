@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include "lab1.h"
 using namespace std;
 
@@ -56,7 +55,7 @@ float computeSide(Box *box, int side, int numNeighbors) {
 
 int getIntersection(int s1, int l1, int s2, int l2) {
     int intersect = l1;
-    if ( s2 > s1 ) { intersect -= s2 - s1; }
-    if ( s2 + l2 < s1 + l1 ) { intersect -= (s1 + l1) - (s2 + l2); }
+    if ( s2 > s1 ) { intersect -= (s2 - s1); }
+    if ( (s2 + l2) < (s1 + l1) ) { intersect -= ((s1 + l1) - (s2 + l2)); }
     return intersect;
 }

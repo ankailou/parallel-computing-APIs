@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <cstdlib>
 #include "lab1.h"
 using namespace std;
@@ -10,11 +9,12 @@ using namespace std;
 
 void populateBoxes() {
     Box box;
-    int id, x, y, height, width, numNeighbor, tmp, dsv;
+    int id, x, y, height, width, numNeighbor, tmp;
+    float dsv;
     cin >> numBoxes >> numRows >> numCols;
     cin >> id;
     while ( id != TERMINATE ) {
-        cin >> x >> y >> height >> width;
+        cin >> y >> x >> height >> width;
         setParameters(&box, x, y, height, width);
         for (int i = 0; i < NUM_SIDES; i++) {
             cin >> numNeighbor;
@@ -27,7 +27,7 @@ void populateBoxes() {
             setNeighbors(&box, i, numNeighbor, &neighbors);
         }
         cin >> dsv;
-        box.dsv = (float)dsv;
+        box.dsv = dsv;
         Boxes[id] = box;
         cin >> id;
     }
