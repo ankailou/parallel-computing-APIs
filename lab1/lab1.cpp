@@ -15,9 +15,9 @@ map<int,Box> Boxes;
  ******************************* main function *******************************
  *****************************************************************************/
 
-int main() {
+int main(int argc, char* argv[]) {
     struct timeval t1, t2;
-    populateBoxes();
+    populateBoxes(argv[1]);
     for (;;) {
         if ( convergenceCondition() ) {
             break;

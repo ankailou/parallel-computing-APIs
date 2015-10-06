@@ -1,4 +1,4 @@
-#include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include "lab1.h"
 using namespace std;
@@ -7,29 +7,31 @@ using namespace std;
  ******************* helper functions for populating boxes *******************
  *****************************************************************************/
 
-void populateBoxes() {
+void populateBoxes(char* file) {
+    ifstream infile;
+    infile.open(file);
     Box box;
     int id, x, y, height, width, numNeighbor, tmp;
     float dsv;
-    cin >> numBoxes >> numRows >> numCols;
-    cin >> id;
+    infile >> numBoxes >> numRows >> numCols;
+    infile >> id;
     while ( id != TERMINATE ) {
-        cin >> y >> x >> height >> width;
+        infile >> y >> x >> height >> width;
         setParameters(&box, x, y, height, width);
         for (int i = 0; i < NUM_SIDES; i++) {
-            cin >> numNeighbor;
+            infile >> numNeighbor;
             int *neighbors;
             neighbors = (int *)malloc(sizeof(int)*numNeighbor);
             for (int j = 0; j < numNeighbor; j++) {
-                cin >> tmp;
+                infile >> tmp;
                 neighbors[j] = tmp;
             }
             setNeighbors(&box, i, numNeighbor, &neighbors);
         }
-        cin >> dsv;
+        infile >> dsv;
         box.dsv = dsv;
         Boxes[id] = box;
-        cin >> id;
+        infile >> id;
     }
 }
 

@@ -36,7 +36,7 @@ extern map<int,Box> Boxes;
  *************************** function prototypes *****************************
  *****************************************************************************/
 
-void populateBoxes();
+void populateBoxes(char*);
 void setParameters(Box*, int, int, int, int);
 void setNeighbors(Box*, int, int, int**);
 
