@@ -15,6 +15,13 @@ map<int,Box> Boxes;
  ******************************* main function *******************************
  *****************************************************************************/
 
+/**
+ * function: main
+ ****************
+ * populate boxes; loop until convergence condition; otherwise compute dsv
+ *
+ * param argv[1]: name of file to read box parameters
+ */
 int main(int argc, char* argv[]) {
     struct timeval t1, t2;
     populateBoxes(argv[1]);
@@ -39,6 +46,13 @@ int main(int argc, char* argv[]) {
  *************** helper function to determine when convergent ****************
  *****************************************************************************/
 
+/**
+ * function: convergenceCondition
+ ********************************
+ * compute difference between max and min dsv value in @Boxes
+ *
+ * returns: true/false value based on convergence condition
+ */
 int convergenceCondition() {
     float max = Boxes[0].dsv;
     float min = Boxes[0].dsv;

@@ -7,6 +7,14 @@ using namespace std;
  ******************* helper functions for populating boxes *******************
  *****************************************************************************/
 
+/**
+ * function: populateBoxes
+ *************************
+ * read parameters from @file and populate map @Boxes with box structs;
+ *
+ * param file: pointer to file to read box parameters;
+ * updates: @Boxes with struct box objects containing box parameters;
+ */
 void populateBoxes(char* file) {
     ifstream infile;
     infile.open(file);
@@ -35,6 +43,18 @@ void populateBoxes(char* file) {
     }
 }
 
+/**
+ * function: setParameters
+ *************************
+ * set parameters of struct @box to other arguments;
+ *
+ * param box: struct holding box information; parameters to be updated;
+ * param x: x-coordinate of the upper-leftmost corner of @box;
+ * param y: y-coordinate of the upper-leftmost corner of @box;
+ * param height: height of @box;
+ * param width: width of @box;
+ * updates: members variables of @box in @Boxes;
+ */
 void setParameters(Box *box, int x, int y, int height, int width) {
     (*box).x = x;
     (*box).y = y;
@@ -42,6 +62,17 @@ void setParameters(Box *box, int x, int y, int height, int width) {
     (*box).w = width;
 }
 
+/**
+ * function: setNeighbors
+ ************************
+ * set neighbor counter and neighbor id array of side @side in @box
+ *
+ * param box: struct holding box information; parameters to be updated;
+ * param side: int representing side := { 0 : top, 1 : bottom, 2 : left, 3 : right}
+ * param numNeighbors: int representing number of neighbor boxes on side @side
+ * param neighbors: int array of ids to neighbor boxes on side @side
+ * updates: member variables of @box in @Boxes according to @side
+ */
 void setNeighbors(Box *box, int side, int numNeighbor, int **neighbors) {
     switch (side) {
         case 0:
