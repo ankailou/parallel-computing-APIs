@@ -38,6 +38,8 @@ int main(int argc, char* argv[]) {
             runtime += diff;
         }
     }
+    cout << "Convergence Loops Complete. Freeing Memory..." << endl;
+    freeBoxes();
     cout << "Number of Convergence Loops: " << loops << endl;
     cout << "Total Program Running Time:  " << runtime << " seconds!" << endl;
 }
@@ -63,4 +65,22 @@ int convergenceCondition() {
     int con = ((max - min) <= (CONVERGENCE_CONST * max)) ? 1 : 0;
     if (con) cout << "Final Max: " << max << "; Final Min: " << min << endl;
     return con;
+}
+
+/*****************************************************************************
+ *********************** helper function to free memory **********************
+ *****************************************************************************/
+
+/**
+ * function: freeBoxes
+ *********************
+ * free all malloc'd memory
+ */
+void freeBoxes() {
+    for (int i = 0; i < numBoxes; i++) {
+        free(Boxes[i].topNeighbor);
+        free(Boxes[i].bottomNeighbor);
+        free(Boxes[i].leftNeighbor);
+        free(Boxes[i].rightNeighbor);
+    }
 }

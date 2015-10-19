@@ -17,13 +17,13 @@ using namespace std;
  */
 void populateBoxes(char* file) {
     ifstream infile;
-    infile.open(file);
-    Box box;
     int id, x, y, height, width, numNeighbor, tmp;
     float dsv;
+    infile.open(file);
     infile >> numBoxes >> numRows >> numCols;
     infile >> id;
     while ( id != TERMINATE ) {
+        Box box;
         infile >> y >> x >> height >> width;
         setParameters(&box, x, y, height, width);
         for (int i = 0; i < NUM_SIDES; i++) {

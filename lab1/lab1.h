@@ -47,3 +47,5 @@ int convergenceCondition();
 void computeNewDSV(Box*);
 float computeSide(Box*,int,int);
 int intersect(int, int, int, int);
+
+void freeBoxes();
