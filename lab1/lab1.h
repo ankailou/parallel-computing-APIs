@@ -7,6 +7,7 @@ using namespace std;
 
 #define NUM_SIDES 4
 #define CONVERGENCE_CONST 0.1
+#define AFFECT_RATE 0.1
 #define TERMINATE -1
 
 /*****************************************************************************

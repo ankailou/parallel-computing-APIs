@@ -28,7 +28,7 @@ void computeNewDSV(Box *box) {
         avgAdjacent += computeSide(&(*box), i, numNeighbors[i]);
     }
     if (perimeter > 0)
-        offset = 0.1 * ((*box).dsv - (avgAdjacent / (float)perimeter));
+        offset = AFFECT_RATE * ((*box).dsv - (avgAdjacent / (float)perimeter));
     (*box).dsvNew = (*box).dsv - offset;
 }
 
