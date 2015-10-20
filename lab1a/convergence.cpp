@@ -1,5 +1,6 @@
 #include "lab1.h"
 #include <stdio.h>
+#include <cstdlib>
 #include <iostream>
 #include <pthread.h>
 using namespace std;
