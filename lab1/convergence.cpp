@@ -1,5 +1,5 @@
 #include "lab1.h"
-using namespace std;
+#include <iostream>
 
 /*****************************************************************************
  *********** helper functions for computing the convergence loops ************

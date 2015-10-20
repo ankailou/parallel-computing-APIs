@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sys/time.h>
+#include <pthread.h>
 #include "lab1.h"
 using namespace std;
 
@@ -25,19 +26,16 @@ map<int,Box> Boxes;
 int main(int argc, char* argv[]) {
     struct timeval t1, t2;
     populateBoxes(argv[1]);
-    for (;;) {
-        if ( convergenceCondition() ) {
-            break;
-        } else {
-            loops++;
-            gettimeofday(&t1, NULL);
-            convergenceLoop();
-            gettimeofday(&t2, NULL);
-            float diff = ((float)t2.tv_usec - (float)t1.tv_usec) / 1000000.0;
-            cout << "Loop " << loops << ": " << diff << " seconds!" << endl;
-            runtime += diff;
-        }
+    while ( !convergenceCondition() ) {
+        loops++;
+        gettimeofday(&t1, NULL);
+        convergenceLoop();
+        gettimeofday(&t2, NULL);
+        float diff = ((float)t2.tv_usec - (float)t1.tv_usec) / 1000000.0;
+        //cout << "Loop " << loops << ": " << diff << " seconds!" << endl;
+        runtime += diff;
     }
+
     cout << "Convergence Loops Complete. Freeing Memory..." << endl;
     freeBoxes();
     cout << "Number of Convergence Loops: " << loops << endl;

@@ -46,6 +46,6 @@ void setNeighbors(Box*, int, int, int**);
 
 void convergenceLoop();
 
-void computeNewDSV(Box*);
+void *computeNewDSV(void*);
 float computeSide(Box*,int,int);
 int intersect(int, int, int, int);

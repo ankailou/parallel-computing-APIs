@@ -1,4 +1,7 @@
 #include "lab1.h"
+#include <stdio.h>
+#include <iostream>
+#include <pthread.h>
 using namespace std;
 
 /*****************************************************************************
@@ -13,8 +16,23 @@ using namespace std;
  * updates: for each @box in @Boxes: @box.dsv = computeNewDSV(@box);
  */
 void convergenceLoop() {
-    for (int i = 0; i < numBoxes; i++)
-        computeNewDSV(&Boxes[i]);
+    int rc;
+    pthread_t *thread;
+    thread = (pthread_t *)malloc(sizeof(*thread)*numBoxes);
+    for (long i = 0; i < numBoxes; i++) {
+        rc = pthread_create(&thread[i], NULL, computeNewDSV, (void *)i);
+        if (rc) {
+            cout << "Error: return code from pthread_create() is " << rc << endl;
+            exit(-1);
+        }
+    }
+    for (long k = 0; k < numBoxes; k++) {
+        rc = pthread_join(thread[k], NULL);
+        if (rc) {
+            cout << "Error: return code from pthread_join() is " << rc << endl;
+            exit(-1);
+        }
+    }
     for (int j = 0; j < numBoxes; j++)
         Boxes[j].dsv = Boxes[j].dsvNew;
 }
@@ -28,21 +46,24 @@ void convergenceLoop() {
  *************************
  * for each side, average adjacent temperature = sum(intersection * dsv) / perimeter;
  *
- * param box: struct holding box information; parameters to be updated;
+ * param var: void pointer representing long representing @box id value;
  * updates: @box.newDSV = @box.dsv - [AFFECT_RATE * (@box.dsv - avg_adjacent_temp)];
  */
-void computeNewDSV(Box *box) {
+void *computeNewDSV(void *var) {
+    long index = (long)var;
+    Box box = Boxes[index];
     int perimeter = 0;
     float avgAdjacent = 0.0, offset = 0.0;
-    int numNeighbors[NUM_SIDES] = {(*box).nTop, (*box).nLeft, (*box).nBottom, (*box).nRight};
+    int numNeighbors[NUM_SIDES] = {box.nTop, box.nLeft, box.nBottom, box.nRight};
     for (int i = 0; i < NUM_SIDES; i++) {
         if (numNeighbors[i] > 0)
-            perimeter += (i % 2 == 0) ? (*box).w : (*box).h;
-        avgAdjacent += computeSide(&(*box), i, numNeighbors[i]);
+            perimeter += (i % 2 == 0) ? (box).w : (box).h;
+        avgAdjacent += computeSide(&(box), i, numNeighbors[i]);
     }
     if (perimeter > 0)
-        offset = AFFECT_RATE * ((*box).dsv - (avgAdjacent / (float)perimeter));
-    (*box).dsvNew = (*box).dsv - offset;
+        offset = AFFECT_RATE * (box.dsv - (avgAdjacent / (float)perimeter));
+    Boxes[index].dsvNew = box.dsv - offset;
+    pthread_exit(NULL);
 }
 
 /**
