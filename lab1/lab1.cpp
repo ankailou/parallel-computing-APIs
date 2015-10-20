@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include <sys/time.h>
 #include "lab1.h"
 using namespace std;
