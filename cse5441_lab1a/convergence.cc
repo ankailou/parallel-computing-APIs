@@ -24,7 +24,7 @@ void convergenceLoop(int numThreads) {
     for (long i = 0; i < numBoxes; i++) {
         index = i % numThreads;
         rc = pthread_create(&thread[index], NULL, computeNewDSV, (void *)i);
-        if (index == numThreads - 1 || index == numBoxes - 1) {
+        if (index == numThreads - 1 || index == (numBoxes - 1)%numThreads) {
             for (long k = 0; k <= index; k++)
                 rc = pthread_join(thread[k], NULL);
         }
