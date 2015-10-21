@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include <string>
+#include <sstream>
 #include <sys/time.h>
 #include <pthread.h>
 #include "lab1.h"
@@ -27,12 +27,15 @@ map<int,Box> Boxes;
  * param argv[2]: number of threads to use
  */
 int main(int argc, char* argv[]) {
+    int numThreads;
     struct timeval t1, t2;
     populateBoxes(argv[1]);
+    istringstream ss(argv[2]);
+    ss >> numThreads;
     while ( !convergenceCondition() ) {
         loops++;
         gettimeofday(&t1, NULL);
-        convergenceLoop(stoi(argv[2]));
+        convergenceLoop(numThreads);
         gettimeofday(&t2, NULL);
         float diff = ((unsigned long long)t2.tv_usec - (unsigned long long)t1.tv_usec) / 1000000.0;
         //cout << "Loop " << loops << ": " << diff << " seconds!" << endl;
