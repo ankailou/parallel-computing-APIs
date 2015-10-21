@@ -11,4 +11,4 @@ lab1.o: lab1.cc lab1.h
 	g++ -O3 lab1.cc -c
 
 clean:
-	rm -rf *.o lab1
+	rm -rf *.o lab1 *.gch
