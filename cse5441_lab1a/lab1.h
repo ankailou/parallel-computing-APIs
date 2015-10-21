@@ -44,7 +44,7 @@ void populateBoxes(char*);
 void setParameters(Box*, int, int, int, int);
 void setNeighbors(Box*, int, int, int**);
 
-void convergenceLoop();
+void convergenceLoop(int);
 
 void *computeNewDSV(void*);
 float computeSide(Box*,int,int);

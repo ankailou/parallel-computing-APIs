@@ -12,27 +12,21 @@ using namespace std;
 /**
  * function: convergenceLoop
  ***************************
- * loop 1: compute new dsv score for each box; loop 2: ommunicate dsv scores;
+ * loop 1: compute new dsv score for each box; loop 2: communicate dsv scores;
  *
+ * param numThreads: number of threads to create
  * updates: for each @box in @Boxes: @box.dsv = computeNewDSV(@box);
  */
-void convergenceLoop() {
-    int rc;
+void convergenceLoop(int numThreads) {
+    int rc, index;
     pthread_t *thread;
-    thread = (pthread_t *)malloc(sizeof(*thread)*numBoxes);
+    thread = (pthread_t *)malloc(sizeof(*thread)*numThreads);
     for (long i = 0; i < numBoxes; i++) {
-        rc = pthread_create(&thread[i], NULL, computeNewDSV, (void *)i);
-        if (rc) {
-            cout << "Error: return code from pthread_create() is " << rc << endl;
-            exit(-1);
-        }
-    }
-    for (long k = 0; k < numBoxes; k++) {
-        rc = pthread_join(thread[k], NULL);
-        if (rc) {
-            cout << "Error: return code from pthread_join() is " << rc << endl;
-            exit(-1);
-        }
+        index = i % numThreads;
+        rc = pthread_create(&thread[index], NULL, computeNewDSV, (void *)i);
+        if (index == numThreads - 1 || index == numBoxes - 1)
+            for (long k = 0; k < numThreads; k++)
+                rc = pthread_join(thread[k], NULL);
     }
     for (int j = 0; j < numBoxes; j++)
         Boxes[j].dsv = Boxes[j].dsvNew;
