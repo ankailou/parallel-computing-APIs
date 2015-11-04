@@ -1,0 +1,17 @@
+To compile
+> make
+
+To run with test file test.txt with 2 threads
+> ./lab1 test.txt 2
+
+To remove executables and .o files
+> make clean
+
+Results: For a small eight box test, the threaded version always performed worse than the sequential version of the code. This is because the dataset is too small, so the cost of creating/destroying the the threads the greater than the benefits of using multiple threads. For 2, 4, 8, and 16 threads, the runtimes were:
+
+2  Threads: 0.008243 seconds
+4  Threads: 0.006316 seconds
+8  Threads: 0.006655 seconds
+16 Threads: 0.005847 seconds
+
+One can observe that the performance going from 2 threads to 4 threads is significant - but the performance going from 4 threads to 8 threads is largely inconsequential and the going from 8 threads to 16 threads actually leads to a drop in performence. This is because the program was tested on a computer with 1 CPU containing 4 cores. Persistent threads perform better than non-persistent threads for this case because the cost of initializing the data structure to hold the thread is done once for the persistent threads and O(n) times for the non-persistent threads.
