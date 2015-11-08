@@ -1,8 +1,11 @@
 To compile
 > make
 
-To run with test file test.txt
-> ./lab1 test.txt
+To run with test file test.txt with n threads
+> ./lab2 test.txt n
 
 To remove executables and .o files
 > make clean
+
+To view the report
+> less report

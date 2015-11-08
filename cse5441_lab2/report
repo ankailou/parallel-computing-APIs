@@ -1,0 +1,51 @@
+# Lab 2
+# Ankai Lou
+
+# pthreads (lab1a) vs OpenMP (lab2)
+
+For 2 threads using test2:
+* lab1a ran in 0.051817 seconds
+* lab2  ran in 0.001155 seconds
+For 4 threads using test2:
+* lab1a ran in 0.033431 seconds
+* lab2  ran in 0.001658 seconds
+For 8 threads using test2:
+* lab1a ran in 0.063293 seconds
+* lab2  ran in 0.009994 seconds
+For 16 threads using test2:
+* lab1a ran in 0.056447 seconds
+* lab2  ran in 0.01642 seconds
+For 32 threads using test2:
+* lab1a ran in 0.053284 seconds
+* lab2  ran in 0.03066 seconds
+For 64 threads using test2:
+* lab1a ran in 0.055155 seconds
+* lab2  ran in 0.079687 seconds
+
+# Wall-Clock Time of lab2
+* 2 threads:  0.002u 0.003s
+* 4 threads:  0.012u 0.000s
+* 8 threads:  0.004u 0.012s
+* 16 threads: 0.008u 0.027s
+* 32 threads: 0.018u 0.034s
+* 64 threads: 0.023u 0.076s
+
+# Actual vs Expected Number of Threads
+
+For 2, 4, 8, 16, 32, and 64 threads. Lab 2 always created the expected number of threads --- even if the number of iterations in the convergence loop for calculating dsvs was less than the maximum number of threads. This often led to a decrease in performance for the OpenMP program for higher thread counts.
+
+# Questions
+* Which threading mechanism, pthreads or OpenMP, provided the best results in your case?
+For a low number of threads (e.g. 2, 4, etc), the OpenMP version performed better than the pthreads version. Once the number of threads became larger (e.g. 32, 64, etc), the pthreads version of the code outperformed the OpenMP version.
+
+* Which threading mechanism, pthreads or OpenMP, was the easiest to implement?
+The OpenMP version of the multi-threaded program was by far the easier program to implement as it involved 3-4 line changes to convergence.cc and 2 line changes to the README --- while the pthread version in lab1a took significantly more time and effort to modify. This is due to the more granular level of control allowed in the pthreads API.
+
+* Which threading mechanism, pthreads or OpenMP, would you be most likely to select for a similar application?
+For a similar application where the loop iterations are independent, I would likely implement the multi-threading in OpenMP. This is because OpenMP seems to outperform or perform similarly to pthreads for small thread counts. Since very few CPUs have more than 4 cores, it is likely that the thread count should be low (i.e. 2 or 4) to optimally take advantage of multithreading. Thus, for simplicity of implementation and optimal performance for 2-4 cores, OpenMP would be the multithreading API of choice.
+
+* Under what circumstances would you speculate that the other mechanism, pthreads or OpenMP, be preferable?
+If an application had shared variables across different threads and required critical sections and atomicity to be clearly delineated in the code, pthreads would be the better multithreading API. This is because pthreads gives more control to the programmer when deciding critical sections and synchronization. Also, since OpenMP always creates disposable threads --- pthreads would be preferably to OpenMP if persistent threads are implemented in the pthreads version.
+
+* What were the most significant surprises you encountered in this exercise?
+I was surprised that OpenMP outperformed pthreads in certain instances. This is because OpenMP is much simpler to implement than pthreads so I expected OpenMP to have a performance tradeoff to compensate for the simplicity.
