@@ -1,0 +1,8 @@
+To compile
+> make
+
+To run with test file test.txt
+> ./lab1 test.txt
+
+To remove executables and .o files
+> make clean
