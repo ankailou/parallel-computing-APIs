@@ -17,7 +17,7 @@ using namespace std;
  */
 void convergenceLoop(int numThreads) {
     omp_set_num_threads(numThreads);
-    cout << "Expected number of threads: " << numThreads << endl;
+    cout << "Expected number of threads: " << omp_get_max_threads() << endl;
     #pragma omp parallel
     {
     #pragma omp for
