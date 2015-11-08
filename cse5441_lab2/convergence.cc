@@ -1,5 +1,6 @@
 #include "lab2.h"
 #include <iostream>
+#include <stdio.h>
 #include "omp.h"
 using namespace std;
 
@@ -22,7 +23,7 @@ void convergenceLoop(int numThreads) {
     #pragma omp for
     for (int i = 0; i < numBoxes; i++)
         computeNewDSV(&Boxes[i]);
-        cout << "Actual number of threads: " << omp_get_num_threads << endl;
+        printf("Actual number of threads: %d", omp_get_num_threads());
     }
     for (int j = 0; j < numBoxes; j++)
         Boxes[j].dsv = Boxes[j].dsvNew;
