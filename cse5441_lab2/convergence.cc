@@ -15,8 +15,9 @@
  */
 void convergenceLoop(int numThreads) {
     omp_set_num_threads(numThreads);
-    #pragma omp parallel for
+    #pragma omp parallel
     {
+    #pragma omp for
     for (int i = 0; i < numBoxes; i++)
         computeNewDSV(&Boxes[i]);
     }
