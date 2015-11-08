@@ -23,7 +23,7 @@ void convergenceLoop(int numThreads) {
     #pragma omp for
     for (int i = 0; i < numBoxes; i++)
         computeNewDSV(&Boxes[i]);
-        printf("Actual number of threads: %d", omp_get_num_threads());
+        printf("Actual number of threads: %d\n", omp_get_num_threads());
     }
     for (int j = 0; j < numBoxes; j++)
         Boxes[j].dsv = Boxes[j].dsvNew;
