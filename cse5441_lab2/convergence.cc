@@ -17,10 +17,10 @@ using namespace std;
 void convergenceLoop(int numThreads) {
     omp_set_num_threads(numThreads);
     cout << "Expected number of threads: " << numThreads << endl;
-    cout << "Actual number of threads:   " << omp_get_num_threads << endl;
     #pragma omp parallel
     {
     #pragma omp for
+    cout << "Actual number of threads:   " << omp_get_num_threads << endl;
     for (int i = 0; i < numBoxes; i++)
         computeNewDSV(&Boxes[i]);
     }
