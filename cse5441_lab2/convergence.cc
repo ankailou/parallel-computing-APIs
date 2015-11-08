@@ -20,9 +20,9 @@ void convergenceLoop(int numThreads) {
     #pragma omp parallel
     {
     #pragma omp for
-    cout << "Actual number of threads:   " << omp_get_num_threads << endl;
     for (int i = 0; i < numBoxes; i++)
         computeNewDSV(&Boxes[i]);
+        cout << "Actual number of threads: " << omp_get_num_threads << endl;
     }
     for (int j = 0; j < numBoxes; j++)
         Boxes[j].dsv = Boxes[j].dsvNew;
