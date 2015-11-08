@@ -1,6 +1,7 @@
 #include "lab2.h"
 #include <iostream>
 #include "omp.h"
+using namespace std;
 
 /*****************************************************************************
  *********** helper functions for computing the convergence loops ************
@@ -15,6 +16,8 @@
  */
 void convergenceLoop(int numThreads) {
     omp_set_num_threads(numThreads);
+    cout << "Expected number of threads: " << numThreads << endl;
+    cout << "Actual number of threads:   " << omp_get_num_threads << endl;
     #pragma omp parallel
     {
     #pragma omp for
