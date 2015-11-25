@@ -4,11 +4,6 @@
 #define dim 4097
 
 __global__ void kernel(double **F) {
-    for (int k = 0; k < 100; k++)
-        for (int i = 1; i < dim; i++)
-            for (int j = 0; j < dim - 1; j++)
-                F[i][j] = F[i-1][j+1] + F[i][j+1];
-
     int i = blockIdx.x + 1;
     int j = blockIdx.y;
     F[i][j] = F[i-1][j+1] + F[i][j+1];
