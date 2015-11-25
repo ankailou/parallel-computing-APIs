@@ -8,7 +8,7 @@ __global__ void kernel(double **A, double** C) {
     int jdx = blockIdx.x * 4;
     for (int k = 0; k < dim; k++) {
         for (int i = idx; i < idx + 4; i++)
-            for (int j = jdx; j < jdx + 2; j++)
+            for (int j = jdx; j < jdx + 4; j++)
                 C[i][j] += A[k][i] * A[k][j];
     }
 }
@@ -44,8 +44,8 @@ int main() {
     cudaMemcpy(d_c,C,memSize,cudaMemcpyHostToDevice);
 
     // launch kernel
-    dim3 dimGrid(tpb);
-    dim3 dimBlock(nblocks);
+    dim3 dimGrid(nblocks);
+    dim3 dimBlock(tpb);
     kernel<<<dimGrid,dimBlock>>>(d_a,d_c);
 
     cudaError_t err = cudaGetLastError();

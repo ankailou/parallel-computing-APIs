@@ -37,8 +37,8 @@ int main() {
     cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
 
     // launch kernel
-    dim3 dimGrid(tpb);
-    dim3 dimBlock(nblocks);
+    dim3 dimGrid(nblocks);
+    dim3 dimBlock(tpb);
     kernel<<<dimGrid,dimBlock>>>(d_a);
 
     cudaError_t err = cudaGetLastError();
