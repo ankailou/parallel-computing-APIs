@@ -4,8 +4,8 @@
 #define dim 4096
 
 __global__ void kernel(double **A, double** C) {
-    int i = blockIdx.x * 4;
-    int j = threadIdx.x;
+    int i = threadIdx.x * 4;
+    int j = blockIdx.x;
     for (int k = 0; k < dim; k++) {
         C[i][j] += A[k][i] * A[k][j];
         C[i+1][j] += A[k][i+1] * A[k][j];
