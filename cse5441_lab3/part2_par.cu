@@ -4,13 +4,12 @@
 #define dim 4096
 
 __global__ void kernel(double **A, double** C) {
-    int i = threadIdx.x * 4;
-    int j = blockIdx.x;
+    int idx = threadIdx.x * 4;
+    int jdx = blockIdx.x * 4;
     for (int k = 0; k < dim; k++) {
-        C[i][j] += A[k][i] * A[k][j];
-        C[i+1][j] += A[k][i+1] * A[k][j];
-        C[i+2][j] += A[k][i+2] * A[k][j];
-        C[i+3][j] += A[k][i+3] * A[k][j];
+        for (int i = idx; i < idx + 4; i++)
+            for (int j = jdx; j < jdx + 2; j++)
+                C[i][j] += A[k][i] * A[k][j];
     }
 }
 
@@ -21,7 +20,7 @@ int main() {
     double **d_c;  // device pointer result
 
     // thread hierarchy
-    int nblocks = 4096;
+    int nblocks = 1024;
     int tpb = 1024;
 
     // allocate memory
@@ -53,6 +52,6 @@ int main() {
     if (err != cudaSuccess) 
         printf("Error: %s\n", cudaGetErrorString(err));
     else
-        printf("Success: terminating!")
+        printf("Success: terminating!\n");
 }
 

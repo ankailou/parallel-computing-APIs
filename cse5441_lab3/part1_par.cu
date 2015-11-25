@@ -45,6 +45,6 @@ int main() {
     if (err != cudaSuccess)
         printf("Error: %s\n", cudaGetErrorString(err));
     else
-        printf("Success: terminating!");
+        printf("Success: terminating!\n");
 }
 
