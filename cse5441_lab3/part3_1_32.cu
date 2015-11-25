@@ -30,11 +30,9 @@ int main() {
     cudaMalloc((void**)&d_a, memSize);
 
     // generate random array & copy
-    for (int i = 0; i < dim; i++) {
-        for (int j = 0; j < dim; j++) {
-            F[i][j] = 1 + (int)(((double)rand() / (double)RAND_MAX) * 999);
-            F_v[i][j] = F[i][j];
-        }
+    for (int i = 0; i < dim * dim; i++) {
+        F[i] = 1 + (int)(((double)rand() / (double)RAND_MAX) * 999);
+        F_v[i] = F[i];
     }
     cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
 
