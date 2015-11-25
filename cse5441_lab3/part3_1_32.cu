@@ -50,7 +50,7 @@ int main() {
     int correct = 1;
     for ( int k = 0; k < checkSize; k++) {
         if (F[k] != F_v[end - k]) {
-            printf("Error @ Index %k!\n",k);
+            printf("Error @ Index %d!\n",k);
             correct = 0;
             break;
         }
