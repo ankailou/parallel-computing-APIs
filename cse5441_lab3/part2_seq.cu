@@ -11,7 +11,8 @@ void kernel(double **A, double **C) {
 }
 
 int main() {
-    double **A, **C;
+    double **A;
+    double **C;
     A = new double*[dim];
     C = new double*[dim];
     // generate random array
@@ -19,6 +20,7 @@ int main() {
         A[i] = new double[dim];
         C[i] = new double[dim];
         for (int j = 0; j < dim; j++) {
+            C[i][j] = 0.0;
             A[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
         }
     }
