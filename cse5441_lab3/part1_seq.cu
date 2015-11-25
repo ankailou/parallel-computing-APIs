@@ -7,7 +7,7 @@
 
 #define dim 4097
 
-void kernel(double[dim][dim] F) {
+__global__ void kernel(double[dim][dim] F) {
     for (int k = 0; k < 100; k++)
         for (int i = 1; i < dim; i++)
             for (int j = 0; j < dim - 1; j++)
@@ -21,6 +21,6 @@ int main() {
         for (int j = 0; j < 4097; j++)
             F[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
     // call kernel
-    kernel(F);
+    kernel<<1,1>>(F);
 }
 
