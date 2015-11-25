@@ -6,11 +6,12 @@
 __global__ void kernel(double **A, double** C) {
     int i = blockIdx.x * 4;
     int j = threadIdx.x;
-    for (int k = 0; k < dim; k++)
+    for (int k = 0; k < dim; k++) {
         C[i][j] += A[k][i] * A[k][j];
         C[i+1][j] += A[k][i+1] * A[k][j];
         C[i+2][j] += A[k][i+2] * A[k][j];
         C[i+3][j] += A[k][i+3] * A[k][j];
+    }
 }
 
 int main() {
