@@ -6,7 +6,6 @@
 __global__ void kernel(double **A, double** C) {
     int i = blockIdx.x;
     int j = threadIdx.x;
-    C[i][j] = 0.0;
     for (int k = 0; k < dim; k++)
         C[i][j] += A[k][i] * A[k][j];
 }
@@ -23,9 +22,11 @@ int main() {
 
     // allocate memory
     size_t memSize;
-    F = new double*[dim];
+    A = new double*[dim];
+    C = new double*[dim]
     memSize = dim * dim * sizeof(double);
     cudaMalloc((void***)&d_a, memSize);
+    cudaMalloc((void***)&d_c, memSize);
 
     // generate random array & copy
     for (int i = 0; i < dim; i++) {
