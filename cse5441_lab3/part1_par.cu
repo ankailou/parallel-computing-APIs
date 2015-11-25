@@ -40,6 +40,6 @@ int main() {
     // launch kernel
     dim3 dimGrid(tpb);
     dim3 dimBlock(nblocks,nblocks);
-    kernel<<dimGrid,dimBlock>>(d_a);
+    kernel<<<dimGrid,dimBlock>>>(d_a);
 }
 
