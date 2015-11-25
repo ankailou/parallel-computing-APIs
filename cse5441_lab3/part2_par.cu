@@ -1,21 +1,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define dim 4097
+#define dim 4096
 
-__global__ void kernel(double **F) {
-    int i = blockIdx.x + 1;
-    int j = blockIdx.y;
-    F[i][j] = F[i-1][j+1] + F[i][j+1];
+__global__ void kernel(double **A, double** C) {
+    int i = blockIdx.x;
+    int j = threadIdx.x;
+    C[i][j] = 0.0;
+    for (int k = 0; k < dim; k++)
+        C[i][j] += A[k][i] * A[k][j];
 }
 
 int main() {
-    double **F;    // host pointer
-    double **d_a;  // device pointer
+    double **A;    // host pointer operand
+    double **C;    // host pointer result
+    double **d_a;  // device pointer operand
+    double **d_c;  // device pointer result
 
     // thread hierarchy
     int nblocks = 4096;
-    int tpb = 100;
+    int tpb = 4096;
 
     // allocate memory
     size_t memSize;
@@ -25,16 +29,19 @@ int main() {
 
     // generate random array & copy
     for (int i = 0; i < dim; i++) {
-        F[i] = new double[dim];
+        A[i] = new double[dim];
+        C[i] = new double[dim];
         for (int j = 0; j < dim; j++) {
-            F[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
+            C[i][j] = 0.0;
+            A[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
         }
     }
-    cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
+    cudaMemcpy(d_a,A,memSize,cudaMemcpyHostToDevice);
+    cudaMemcpy(d_c,C,memSize,cudaMemcpyHostToDevice);
 
     // launch kernel
     dim3 dimGrid(tpb);
-    dim3 dimBlock(nblocks,nblocks);
-    kernel<<<dimGrid,dimBlock>>>(d_a);
+    dim3 dimBlock(nblocks);
+    kernel<<<dimGrid,dimBlock>>>(d_a,d_c);
 }
 
