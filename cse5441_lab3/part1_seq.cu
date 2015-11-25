@@ -1,13 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <curand.h>
-#include <curand_kernel.h>
 #include <math.h>
-#include <assert.h>
-
 #define dim 4097
 
-__global__ void kernel(double[dim][dim] F) {
+void kernel(double **F) {
     for (int k = 0; k < 100; k++)
         for (int i = 1; i < dim; i++)
             for (int j = 0; j < dim - 1; j++)
@@ -15,12 +11,16 @@ __global__ void kernel(double[dim][dim] F) {
 }
 
 int main() {
-    double F[dim][dim];
+    double **F;
+    F = new double*[dim];
     // generate random array
-    for (int i = 0; i < 4097; i++)
-        for (int j = 0; j < 4097; j++)
+    for (int i = 0; i < dim; i++) {
+        F[i] = new double[dim];
+        for (int j = 0; j < dim; j++) {
             F[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
+        }
+    }
     // call kernel
-    kernel<<1,1>>(F);
+    kernel(F);
 }
 
