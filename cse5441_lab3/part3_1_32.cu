@@ -32,10 +32,8 @@ int main() {
     // generate random array & copy
     for (int i = 0; i < dim * dim; i++) {
         F[i] = 1 + (int)(((double)rand() / (double)RAND_MAX) * 999);
-        F_v[i] = F[i];
-        printf("%d ",F[i]);
     }
-    printf("\n\n\n")
+    memcpy(F_v,F,memSize);
     cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
 
     // launch kernel
@@ -45,9 +43,6 @@ int main() {
 
     // get memory back
     cudaMemcpy(F, d_a, memSize, cudaMemcpyDeviceToHost);
-
-    for (int t = 0; t < dim * dim; t++)
-        printf("%d ",F[i]);
 
     // verify
     int end = (dim * dim) - 1;
