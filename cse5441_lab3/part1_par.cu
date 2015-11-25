@@ -40,5 +40,11 @@ int main() {
     dim3 dimGrid(tpb);
     dim3 dimBlock(nblocks);
     kernel<<<dimGrid,dimBlock>>>(d_a);
+
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess)
+        printf("Error: %s\n", cudaGetErrorString(err));
+    else
+        printf("Success: terminating!");
 }
 
