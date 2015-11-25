@@ -44,6 +44,12 @@ int main() {
     dim3 dimBlock(nblocks,nblocks);
     kernel<<<dimGrid,dimBlock>>>(d_a);
 
+    cudaError_t err = cudaGetLastError();
+    if (err != cudaSuccess)
+        printf("Error: %s\n", cudaGetErrorString(err));
+    else
+        printf("Success: verifying...");
+
     // get memory back
     cudaMemcpy(F, d_a, memSize, cudaMemcpyDeviceToHost);
 
