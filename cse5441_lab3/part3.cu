@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+
 #define dim 1024
+#define nblocks 1
+#define tpb 32
 
 __global__ void kernel(int *F) {
-    int idx = threadIdx.x * 16384;
+    // compute block/thread offset
+    int block_offset = (dim * dim * blockIdx.x) / (nblocks * 2);
+    int thread_offset = (dim * dim * threadIdx.x) / (nblocks * tpb * 2);
+    int num_flops = thread_offset;
+    int idx = block_offset + thread_offset;
     int end = (dim * dim) - 1;
-    for ( int i = idx; i < idx + 16384 - 1; i++) {
+    for ( int i = idx; i < idx + num_flops; i++) {
         int tmp = F[i];
         F[i] = F[end - i];
         F[end - i] = tmp;
@@ -17,10 +24,6 @@ int main() {
     int *F;    // host pointer
     int *F_v;  // host verification
     int *d_a;  // device pointer
-
-    // thread hierarchy
-    int nblocks = 1;
-    int tpb = 32;
 
     // allocate memory
     size_t memSize;
@@ -49,7 +52,7 @@ int main() {
     int checkSize = (dim * dim) / 2;
     int correct = 1;
     for ( int k = 0; k < checkSize; k++) {
-        if (F[k] != F_v[end - k]) {
+        if (F[k] != F_v[(dim * dim) - 1 - k]) {
             printf("Error @ Index %d!\n",k);
             correct = 0;
             break;
