@@ -23,7 +23,7 @@ int main() {
     // allocate memory
     size_t memSize;
     A = new double*[dim];
-    C = new double*[dim]
+    C = new double*[dim];
     memSize = dim * dim * sizeof(double);
     cudaMalloc((void***)&d_a, memSize);
     cudaMalloc((void***)&d_c, memSize);
