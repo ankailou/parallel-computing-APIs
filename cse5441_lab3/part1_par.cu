@@ -9,7 +9,7 @@ __global__ void kernel(double *F) {
     for (int k = 0; k < 100; k++) {
         for (int i = idx; i < idx + 4; i++ )
             for (int j = jdx; j < jdx + 4; j++)
-                F[(i*1024) + j] = F[1024*(i-1) + j+1] + F[(1024*i) + j+1];
+                F[(i*dim) + j] = F[dim*(i-1) + j+1] + F[(dim*i) + j+1];
     }
 }
 
