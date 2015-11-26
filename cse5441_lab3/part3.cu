@@ -48,13 +48,12 @@ int main() {
     if (err != cudaSuccess)
         printf("Error: %s\n", cudaGetErrorString(err));
     else
-        printf("Success: verifying...");
+        printf("Success: verifying...\n");
 
     // get memory back
     cudaMemcpy(F, d_a, memSize, cudaMemcpyDeviceToHost);
 
     // verify
-    int end = (dim * dim) - 1;
     int checkSize = (dim * dim) / 2;
     int correct = 1;
     for ( int k = 0; k < checkSize; k++) {

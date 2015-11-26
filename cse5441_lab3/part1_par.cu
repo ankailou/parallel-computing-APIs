@@ -25,11 +25,12 @@ int main() {
     size_t memSize;
     F = new double*[dim];
     memSize = dim * dim * sizeof(double);
-    cudaMalloc((void***)&d_a, memSize);
+    cudaMalloc((void**)&d_a, dim*sizeof(*d_a));
 
     // generate random array & copy
     for (int i = 0; i < dim; i++) {
         F[i] = new double[dim];
+        cudaMalloc((void**)&d_a[i],dim*sizeof(*d_a[i]))
         for (int j = 0; j < dim; j++) {
             F[i][j] = 1.0 + ((double)rand() / (double)RAND_MAX);
         }
@@ -40,6 +41,7 @@ int main() {
     dim3 dimGrid(nblocks);
     dim3 dimBlock(tpb);
     kernel<<<dimGrid,dimBlock>>>(d_a);
+    cudaDeviceSynchronize();
 
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess)
