@@ -1,0 +1,49 @@
+# Instructions to Compile/Run:
+
+1. Ensure you are on an OSC cluster with a GPU.
+2. Note the following files are in this submissions:
+    part1s - kernel from part 1 implemented sequentially
+    part1p - kernel from part 1 implemented with CUDA
+    part2s - kernel from part 2 implemented sequentially
+    part2p - kernel from part 2 implemented with CUDA
+    part3_1_32 - problem from part 3 implement with 1 block and 32 threads/block
+    part3_1_1024 - problem from part 3 implement with 1 block and 1024 threads/block
+    part3_4_1024 - problem from part 3 implement with 4 blocks and 1024 threads/block
+3. To load CUDA environment:
+    > module load cuda
+4. To compile a file named partXx.cu:
+    > nvcc -O -o partXx partXx.cu
+5. To run the resultant executable:
+    > time ./partXx
+6. Observe the time after the program finishes execution.
+
+* Note that part2s (sequential part 2) will take a very long time to run.
+* This is because naive sequential matrix-multiplication is very inefficient.
+
+# Results and Explanation
+
+## Part 1
+
+The sequential version of part 1 finished running in 11.82 seconds. Given that there are 100*4096*4096 = 1677721600 addition operations in the kernel, this is 141,939,221.658 GFLOPS.
+
+The parallel version of part 1 (using 1024 blocks and 1024 threads/block) finished running in 1.22 seconds. Similar to the sequential version, this is 1,375,181,639.34 GFLOPS.
+
+The parallel version outperforms the sequential version by one order of magnitude. This is because there are a total of 16777216 threads across 1024 blocks each performing 100 operations. Theoretically this should reduce the runtime by seven orders of magnitude --- however, time must be added to the sequential version for creating the thread/block objects and copying a large matrix over to the device (both very expensive operations).
+
+## Part 2
+
+The sequential version of part 2 finished running in over 30 minutes. This is 932067.5 GLOPS.
+
+The parallel version of part 2 finished running in 3.15. This is 8876833.8 GFLOPS.
+
+The time improvement for the parallel version in part 2 is far greater than the runtime improvement for part 1. Naive sequential matrix multiplication is extremely time-consuming for sufficiently large matrices. With parallelization using 1024 blocks with 1024 threads/block, the runtime is reduced down by one order of magnitude down to 3.15 minutes --- a single digit number of minutes and far more manageable. The improvement also seems resultant from a large number of threads and a powerful GPU.
+
+## Part 3
+
+1 Block and 32 Threads/Block reversed a 1024x1024 array in 0.159 seconds = 3297408.8 GFLOPS
+1 Block and 1024 Threads/Block reversed a 1024x1024 array in 0.104 seconds = 5041230.7 GFLOPS
+4 Block and 1024 Threads/Block reversed a 1024x1024 array in 0.111 seconds = 4723315.3 GFLOPS
+
+All three trials executed very quickly. 1block/1024threads seemed to perform the best. 1block/1024threads outperformed 1block/32threads by a small margin due to a larger number of threads. Since the OSC GPU handles up to 1024 threads per block, it intuitively makes sense that using the maximum number of threads would lead to optimal performance.
+
+There was a drop in performance going from 1block/1024thread to 4blocks/1024threads. Despite having more blocks and thus more threads, the 3rd trial dropped in performence. This is likely because a some point of diminishing returns was crossed going from 1block/1024threads to 4blocks/1024threads --- i.e. the cost of initializing the thread/block structures exceeded the time gained from using parallelization. This could also mean that the performance gains in using CUDA are primarily in increasing the number of threads --- whereas the number of blocks is much more expensive/resource-intensive and therefore leads to lesser performance gains and even losses at a certain point. This was expected as a large amount of resource-intensive data structures is certain to add to the runtime and eventually the benefits from parallelization cap out.
