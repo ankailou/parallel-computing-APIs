@@ -10,7 +10,7 @@ __global__ void kernel(int *F) {
     // compute block/thread offset
     int block_offset = (dim * dim * blockIdx.x) / (nblocks * 2);
     int thread_offset = (dim * dim * threadIdx.x) / (nblocks * tpb * 2);
-    int num_flops = thread_offset;
+    int num_flops = (dim * dim) / (nblocks * tpb * 2);
     int idx = block_offset + thread_offset;
     int end = (dim * dim) - 1;
     for ( int i = idx; i < idx + num_flops; i++) {
@@ -40,9 +40,10 @@ int main() {
     cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
 
     // launch kernel
-    dim3 dimGrid(tpb);
-    dim3 dimBlock(nblocks,nblocks);
+    dim3 dimGrid(nblocks);
+    dim3 dimBlock(tpb);
     kernel<<<dimGrid,dimBlock>>>(d_a);
+    cudaDeviceSynchronize();
 
     cudaError_t err = cudaGetLastError();
     if (err != cudaSuccess)
