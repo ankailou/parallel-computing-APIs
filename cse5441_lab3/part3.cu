@@ -64,6 +64,6 @@ int main() {
             break;
         }
     }
-    if (correct) printf("Reversal successful!");
+    if (correct) printf("Reversal successful!\n");
 }
 
