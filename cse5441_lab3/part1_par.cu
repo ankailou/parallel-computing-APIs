@@ -30,7 +30,7 @@ int main() {
     // generate random array & copy
     for (int i = 0; i < dim; i++) {
         for (int j = 0; j < dim; j++) {
-            F[(i*1024) + j] = 1.0 + ((double)rand() / (double)RAND_MAX);
+            F[(i*dim) + j] = 1.0 + ((double)rand() / (double)RAND_MAX);
         }
     }
     cudaMemcpy(d_a,F,memSize,cudaMemcpyHostToDevice);
