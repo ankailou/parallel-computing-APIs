@@ -5,26 +5,26 @@
 
 int main(int argc, char *argv[]){
     double *A, *B;
-    int rank, size;
+    int rank, size, i, k;
     MPI_Status status;
     MPI_Init( &argc, &argv);
     MPI_Comm_rank( MPI_COMM_WORLD, &rank); // process 0 sending to process 1
     MPI_Comm_size( MPI_COMM_WORLD, &size);
 
-    if (world_size != 2) {
+    if (size != 2) {
         fprintf(stderr, "World size must be two for %s\n", argv[0]);
         MPI_Abort(MPI_COMM_WORLD, 1);
     }
 
     int msg[MSG_IDX] = { 32, 256, 512, 1024, 2048 };
     MPI_Barrier(MPI_COMM_WORLD);
-    for (int k = 0; k < MSG_IDX; k++) {
+    for (k = 0; k < MSG_IDX; k++) {
         int msgSize = msg[k];
         A = (double *)malloc( msgSize * sizeOf(double) );
         B = (double *)malloc( msgSize * sizeOf(double) );
         printf("Trial %k: Message Size = %d double-precision floating points...");
         // start timer
-        for (int i = 0; i < 1000000; i++) {
+        for (i = 0; i < 1000000; i++) {
             if ( rank == 0 ) {
                 MPI_Send( &A, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
                 MPI_Recv( &B, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
