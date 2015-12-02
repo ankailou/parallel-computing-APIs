@@ -1,7 +1,9 @@
 #include <mpi.h>
 #include <stdio.h>
+#include <time.h>
 
 #define MSG_IDX 5
+#define ITERATIONS 1000000
 
 int main(int argc, char *argv[]){
     double *A, *B;
@@ -23,13 +25,14 @@ int main(int argc, char *argv[]){
         A = (double *)malloc( msgSize * sizeof(double) );
         B = (double *)malloc( msgSize * sizeof(double) );
         for (i = 0; i < msgSize; i++) {
-            A[i] = 0.0;
-            B[i] = 0.0;
+            A[i] = (double)rand();
+            B[i] = (double)rand();
         }
 
-        printf("Trial %d: Process %d, Message Size = %d dpfp...\n", k, rank, msg[k]);
+        printf("Trial %d, Process %d: Message Size = %d dpfp...\n", k, rank, msg[k]);
         // start timer
-        for (i = 0; i < 1000000; i++) {
+        clock_t start = clock(), diff;
+        for (i = 0; i < ITERATIONS; i++) {
             if ( rank == 0 ) {
                 MPI_Send( &A[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
                 MPI_Recv( &B[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
@@ -42,6 +45,10 @@ int main(int argc, char *argv[]){
                 MPI_Send( &A[0], msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD );
             }
         }
+        diff = clock() - start;
+        double tm = diff / ITERATIONS;
+        double bandwidth = (double)(sizeof(double) * msg[k]) / (double)time;
+        printf("Trial %d, Process %d: time = %f, bandwidth = %f", k, rank, tm, bandwidth);
         // compute runtime + bandwidth
         free(A);
         free(B);
