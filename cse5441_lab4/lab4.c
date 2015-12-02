@@ -20,21 +20,26 @@ int main(int argc, char *argv[]){
     MPI_Barrier(MPI_COMM_WORLD);
     for (k = 0; k < MSG_IDX; k++) {
         int msgSize = msg[k];
-        A = (double *)malloc( msgSize * sizeOf(double) );
-        B = (double *)malloc( msgSize * sizeOf(double) );
+        A = (double *)malloc( msgSize * sizeof(double) );
+        B = (double *)malloc( msgSize * sizeof(double) );
+        for (i = 0; i < msgSize; i++) {
+            A[i] = 0.0;
+            B[i] = 0.0;
+        }
+
         printf("Trial %k: Message Size = %d double-precision floating points...");
         // start timer
         for (i = 0; i < 1000000; i++) {
             if ( rank == 0 ) {
-                MPI_Send( &A, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
-                MPI_Recv( &B, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
-                MPI_Send( &B, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
-                MPI_Recv( &A, msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
+                MPI_Send( &A[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
+                MPI_Recv( &B[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
+                MPI_Send( &B[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD);
+                MPI_Recv( &A[0], msgSize, MPI_DOUBLE_PRECISION, 1, 0, MPI_COMM_WORLD, &status );
             } else if ( rank == 1 ) {
-                MPI_Recv( &A, msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD, &status);
-                MPI_Send( &B, msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD );
-                MPI_Recv( &B, msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD, &status);
-                MPI_Send( &A, msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD );
+                MPI_Recv( &A[0], msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD, &status);
+                MPI_Send( &B[0], msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD );
+                MPI_Recv( &B[0], msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD, &status);
+                MPI_Send( &A[0], msgSize, MPI_DOUBLE_PRECISION, 0, 0, MPI_COMM_WORLD );
             }
         }
         // compute runtime + bandwidth
