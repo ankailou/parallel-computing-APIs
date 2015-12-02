@@ -46,9 +46,9 @@ int main(int argc, char *argv[]){
             }
         }
         diff = clock() - start;
-        double tm = diff / ITERATIONS;
-        double bandwidth = (double)(sizeof(double) * msg[k]) / (double)time;
-        printf("Trial %d, Process %d: time = %f, bandwidth = %f", k, rank, tm, bandwidth);
+        long tm = diff / ITERATIONS;
+        long bandwidth = (long)(sizeof(double) * msg[k]) / (long)time;
+        printf("Trial %d, Process %d: time = %lu, bandwidth = %lu", k, rank, tm, bandwidth);
         // compute runtime + bandwidth
         free(A);
         free(B);
