@@ -29,7 +29,6 @@ int main(int argc, char *argv[]){
             B[i] = (double)rand();
         }
 
-        printf("Trial %d, Process %d: Message Size = %d dpfp...\n", k, rank, msg[k]);
         // start timer
         clock_t start = clock(), diff;
         for (i = 0; i < ITERATIONS; i++) {
@@ -48,7 +47,7 @@ int main(int argc, char *argv[]){
         diff = clock() - start;
         float tm = (float)diff / (float)ITERATIONS;
         float bandwidth = (float)(sizeof(double) * msg[k]) / tm;
-        printf("Trial %d, Process %d: time = %f, bandwidth = %f\n", k, rank, tm, bandwidth);
+        printf("Trial %d, Process %d, Size = %d: time = %f seconds, bandwidth = %f\n", k, rank, msg[k], tm, bandwidth);
         // compute runtime + bandwidth
         free(A);
         free(B);
