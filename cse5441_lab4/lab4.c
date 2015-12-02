@@ -19,6 +19,7 @@ int main(int argc, char *argv[]){
     int msg[MSG_IDX] = { 32, 256, 512, 1024, 2048 };
     MPI_Barrier(MPI_COMM_WORLD);
     for (k = 0; k < MSG_IDX; k++) {
+        printf("Trial %k: Message Size = %d double-precision floating points...\n", k, msg[k]);
         int msgSize = msg[k];
         A = (double *)malloc( msgSize * sizeof(double) );
         B = (double *)malloc( msgSize * sizeof(double) );
@@ -27,7 +28,6 @@ int main(int argc, char *argv[]){
             B[i] = 0.0;
         }
 
-        printf("Trial %k: Message Size = %d double-precision floating points...");
         // start timer
         for (i = 0; i < 1000000; i++) {
             if ( rank == 0 ) {
