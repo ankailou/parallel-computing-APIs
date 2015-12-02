@@ -45,7 +45,7 @@ int main(int argc, char *argv[]){
             }
         }
         diff = clock() - start;
-        float tm = (float)diff / (float)ITERATIONS;
+        float tm = (float)diff / (4.0 * (float)ITERATIONS);
         float bandwidth = (float)(sizeof(double) * msg[k]) / tm;
         printf("Trial %d, Process %d, Size = %d: time = %f seconds, bandwidth = %f\n", k, rank, msg[k], tm, bandwidth);
         // compute runtime + bandwidth
